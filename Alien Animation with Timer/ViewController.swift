@@ -8,10 +8,12 @@
 
 import UIKit
 
+class ViewController: UIViewController {
+    var chk = true
     var counter = 1
     var myTimer = Timer()
-
-class ViewController: UIViewController {
+    var animation = false
+    
     @IBOutlet weak var myImageView: UIImageView!
     @IBOutlet weak var imageCounter: UILabel!
     
@@ -20,18 +22,25 @@ class ViewController: UIViewController {
         imageCounter.text = String(counter)
     }
     @IBAction func play(_ sender: Any) {
+        if animation == false {
         myTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ViewController.doAnimation), userInfo: nil, repeats: true)
+            animation = true
+        } else{
+            myTimer.invalidate()
+            animation = false
+        }
     }
-    
-    @IBAction func stop(_ sender: Any) {
-        myTimer.invalidate()
-    }
-    
+
     @objc func doAnimation() {
         if counter == 5 {
-            counter = 1
-        } else {
+            chk = false
+            counter = counter - 1
+        }else if chk == true{
             counter = counter + 1
+        }else if counter == 1{
+            chk = true
+        }else if chk == false{
+            counter = counter - 1
         }
         
         myImageView.image = UIImage(named:"frame\(counter).png")
